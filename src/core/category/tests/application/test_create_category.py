@@ -7,13 +7,13 @@ import uuid
 
 from src.core.category.application.create_category import CreateCategory, CreateCategoryRequest, CreateCategoryResponse
 from src.core.category.application.exceptions import InvalidCategoryData
+from src.core.category.application.create_category import CategoryRepository
 from src.core.category.domain.category import Category
-from src.core.category.infra.in_memory_category_repository import InMemoryCategoryRepository
 
 
 class TestCreateCategory:
     def test_create_category_with_valid_data(self):
-        mock_repository = MagicMock(InMemoryCategoryRepository)
+        mock_repository = MagicMock(CategoryRepository)
         use_case = CreateCategory(repository=mock_repository)
         request = CreateCategoryRequest(
             name="Filme", 
@@ -28,7 +28,7 @@ class TestCreateCategory:
         assert mock_repository.save.called is True
     
     def test_create_category_with_invalid_data(self):
-        mock_repository = MagicMock(InMemoryCategoryRepository)
+        mock_repository = MagicMock(CategoryRepository)
         use_case = CreateCategory(repository=mock_repository)
 
         with pytest.raises(InvalidCategoryData, match="name cannot be empty") as exc_info:
